@@ -1,0 +1,162 @@
+html,body {
+    padding: 0;
+    margin: 0;
+    height: 100%;
+}
+
+
+#background {
+    background-color: #000;
+    background-image: url(../images/audience-868074_1280.jpg);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    display: table;
+    height: 100%;
+    width: 100%;
+    
+}
+
+#logInContainer * { /* * means everything in the #logInContainer */
+    color: #fff;
+    font-family: 'Helvetica Neue','Helvetica', 'Arial', sans-serif; 
+    font-weight: normal;
+    line-height: 1em; /* em is based from font-size, if font-size is 12px, then 1em = 12px*/
+    box-sizing: border-box;
+}
+
+#logInContainer {
+    width: 80%;
+    margin: 0 auto;
+    position: relative;
+    max-width: 1024px;
+}
+/*------------------------------------------------FROM STACK-OVERFLOW (this code below will auto change the placeholder color of the input)-------------------------------------------------------------------*/
+::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+    color:    #fff;
+}
+:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+   color:    #fff;
+   opacity:  1;
+}
+::-moz-placeholder { /* Mozilla Firefox 19+ */
+   color:    #fff;
+   opacity:  1;
+}
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+   color:    #fff;
+}
+::-ms-input-placeholder { /* Microsoft Edge */
+   color:    #fff;
+}
+
+::placeholder { /* Most modern browsers support this now. */
+   color:    #fff;
+}
+/*------------------------------------------------------------------------------------------------------------------------------*/
+#inputContainer {
+    width: 400px;
+    padding: 45px;
+    float: left;
+    border-right: 1px solid #999;
+}
+
+#inputContainer h2 {
+    text-align: center;
+}
+
+#inputContainer input[type="text"], #inputContainer input[type="password"], #inputContainer input[type="email"] {
+    display: block;
+    background-color: transparent;
+    border: 0;
+    border-bottom: 1px solid #fff;
+    height: 27px;
+    line-height: 27px;
+    width: 100%;
+
+    /*
+    this styling was tested in google developer tools using the element.style {
+    } before it was encoded in register.css
+    */
+}
+
+#inputContainer label {
+    color: #a0a0a0;
+    font-size: 13px;
+    margin-top: 15px;
+    display: block;
+}
+
+
+button { /*or #inputContainer button*/
+    background-color: transparent;
+    border: 2px solid #fff;
+    border-radius: 250px;
+    color: #fff;
+    display: block;
+    font-size: 14px;
+    letter-spacing: 1px;
+    margin: 20px auto;
+    height: 41px;
+    width: 100%;
+}
+
+button:hover {
+    cursor: pointer;
+}
+
+#hideLogin, #hideRegister {
+    font-size: 12px;
+    font-weight: bold;
+    
+}
+
+#registerForm, #loginForm {
+    display: none;      /*this will prevent the hidden div from showing when page is refresh*/
+}
+
+.hasAccountText {
+    text-align: center;
+}
+
+.hasAccountText:hover {
+    cursor: pointer;
+}
+
+
+#loginText {
+    padding: 45px;
+    display: table-cell; /*this will make it behave like a table cell*/
+}
+
+#loginText h1 {
+    /*color: #d107af;*/
+    color: #2ebd29;
+    font-size: 60px;
+    font-weight: bold;
+}
+
+#loginText h2 {
+    margin: 35px 0;
+}
+
+#loginText ul {
+    padding: 0;
+}
+
+#loginText ul li {
+    font-size: 20px;
+    list-style: none;
+    padding-left: 40px;
+    padding-bottom: 20px;
+    padding-top: 5px;
+    background-image: url(../images/icons/icons8_Checkmark_32px.png);
+    background-repeat: no-repeat;
+}
+
+#inputContainer .errorMessage { /*you can get the class when you input a wrong data, then check in the developer tools*/
+    color: #2ebd29;
+    font-size: 12px;
+    display: block;
+
+}

@@ -67,20 +67,13 @@ if(isset($_POST['signUpButton'])) { // code for pressing the signup button
     $password2 = sanitizeFormPassword($_POST['registerPassword2']);
 
 
-// IF SIGN-IN WAS SUCCESSFUL, it will be re-directed to the location
+/*--------------------------IF SIGN-IN WAS SUCCESSFUL, it will be re-directed to the location------------------*/ 
     
     $wasSuccessful = $account->register($username, $firstname, $lastname, $email, $email2, $password, $password2); // we use the -> to call the function,and we have an instance of the class
     if($wasSuccessful == true) {
+        $_SESSION['userLoggedIn'] = $username;
         header("Location: index.php");
     }
-
-
-
-
-
-
-
-
 
 }
 ?>

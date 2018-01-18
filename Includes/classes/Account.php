@@ -1,17 +1,34 @@
 
  <!--VALIDATION FUNCTIONS-->
  
- <!--CREATING CLASS-->
+ <!--CODE FOR CREATING CLASS-->
 
 <?php
     class Account {
-        private $errorArray;
 
-        public function __construct() {
+        private $con;
+        private $errorArray;
+        
+
+        public function __construct($con) {
+            $this->con = $con;
             $this->errorArray = array();
         }
+        /*------------------------------------------LOGIN FUNCTION----------------------------------*/
+        
+        public function login($un, $pw) {
+            $pw = md5($pw);
+            $query = mysqli_query($this->con,"SELECT * FROM users WHERE registerUsername='$un' AND password='$pw'");
 
-        // REGISTER FUNCTION
+            if(mysqli_num_rows($query) == 1) {
+                return true;
+            }
+            else {
+                array_push($this->errorArray, Constants::$loginfailed);
+                return false;
+            }
+        }
+        /*------------------------------------------REGISTER FUNCTION----------------------------------*/
 
         public function register($un, $fn, $ln, $em, $em2, $pw, $pw2) {
             //VALIDATIONS
@@ -21,12 +38,11 @@
             $this->validateEmails($em, $em2);
             $this->validatePasswords($pw, $pw2);
 
-
-            // TO CHECK IF SIGN-IN WAS SUCCESSFUL
+        /*------------------------------------------TO CHECK IF SIGN-IN WAS SUCCESSFUL----------------------------------*/
 
             if(empty($this->errorArray) == true) {
                 //Insert in Database
-                return false;
+                return $this->insertUserDetails($un, $fn, $ln, $em, $pw);
             }
 
             else {
@@ -34,7 +50,8 @@
             }
         }
 
-        //ERROR MESSAGE FUNCTION
+          /*------------------------------------------ERROR MESSAGE FUNCTION----------------------------------*/
+
         public function getError($error) { // use to check the error in this class
             if(!in_array($error, $this->errorArray)) {
                 $error = "";
@@ -42,17 +59,42 @@
             return "<span class='errorMessage'>$error</span>";
         }
        
+          /*------------------------------------------DATAS and DETAILS TO BE INSERTED IN THE DATABASE----------------------------------*/
+
+        private function insertUserDetails($un, $fn, $ln, $em, $pw) {
+            $encrytedPw = md5($pw); // md5 method to encrypt the password, best for beginners
+            $profilePic = "assets/images/profile-pics/markdauz.png";
+            $date = date("Y-m-d");
+
+            /*
+            TO DEBUG ERRORs
+
+            echo "INSERT INTO users VALUES ('', '$un', '$fn', '$ln', '$em', '$encrytedPw', '$date', '$profilePic')");
+            copy the echoed result to mySQL database under SQL tab, paste it and click go, then you will find if there is any error
+            
+            
+            */
+
+            $result = mysqli_query($this->con, "INSERT INTO users VALUES ('', '$un', '$fn', '$ln', '$em', '$encrytedPw', '$date', '$profilePic')"); // this path matches with the structure in the mySql database. it should be in single quotes
+            
+            return  $result;
+        }
 
 
 
-        // PRIVATE FUNCTIONS -- these functions are only in the class Account
+        /*------------------------------------------PRIVATE FUNCTIONS -- these functions are only in the class Account----------------------------------*/
         private function validateUsername($un) { 
             if(strlen($un) > 25 || strlen($un) < 5) {
                 array_push($this->errorArray, Constants::$usernameCharacters); // :: means we don't have an instance
                 return;
             }
 
-            // TODO: check if username exists
+        // TO CHECK IF USERNAME IS TAKEN
+        $checkUserNameQuery = mysqli_query($this->con, "SELECT registerUsername FROM users WHERE registerUsername='$un'");
+            if(mysqli_num_rows($checkUserNameQuery) != 0) {
+                array_push($this->errorArray, Constants::$usernameTaken);
+                return;
+            }
             
 
         }
@@ -81,7 +123,13 @@
                 return;
             }
 
-        // TODO: check if username hasn't been used
+       
+           // TO CHECK IF EMAIL IS TAKEN
+           $checkEmailQuery = mysqli_query($this->con, "SELECT email FROM users WHERE email='$em'");
+           if(mysqli_num_rows( $checkEmailQuery) != 0) {
+               array_push($this->errorArray, Constants::$emailTaken);
+               return;
+           }
 
         }
         private function validatePasswords($pw, $pw2) {
